@@ -1,0 +1,12 @@
+---
+title: "Assignment 1"
+author: "Carmen Roberts"
+output: github_document
+---
+
+## Hello Octocat
+
+I love Octocat. She's the coolest cat in town.
+
+![](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/images/octocat.png)
+
