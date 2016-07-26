@@ -10,17 +10,58 @@ I love Octocat. She's the coolest cat in town.
 
 ![](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/images/octocat.png)
 
+## Exploring Anscombe Dataset
+
 ```{r, quick look, echo=FALSE}
-data("anscombe")
-dim(anscombe)
-names(anscombe)
-head(anscombe, n=6)
-tail(anscombe, n=6)
-summary(anscombe)
+data("anscombe")     # indicate that you are using the dataset "anscombe"
+dim(anscombe)        # dimensions of dataframe (number of rows and columns)
+names(anscombe)      # names of the columns and rows
+head(anscombe, n=6)  # contents of first six lines
+tail(anscombe, n=6)  # contents of last six lines
+summary(anscombe)    # summary statistics for each column
 ```
 
+## Scatter Plot of Anscombe Dataset
+
 ```{r xy_plot, fig.height=8, fig.width=8, fig.align='center', dev='svg'}
-data("anscombe")
-plot(anscombe$x1, anscombe$y1)
-abline(lm(y1 ~ x1, data = anscombe))
+data("anscombe")            # indicate that you are using the dataset "anscombe" 
+plot(anscombe$x1, anscombe$y1)        #plotting scatter plot of columns x1 and y1
+abline(lm(y1 ~ x1, data = anscombe))  #adding abline showing linear regression
 ```
+
+```{r data_import, echo=FALSE}
+df <- read.csv("https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/assignments/analgesic.csv")    
+```
+
+## Exploring Analgesic Dataset
+
+```{r data_summary, echo=FALSE, warning=FALSE}
+data("df")     # indicate that you are using the dataset "df"
+dim(df)        # dimensions of dataframe (number of rows and columns)
+names(df)      # names of columns and rows
+head(df, n=6)  # contents of first six lines
+tail(df, n=6)  # contents of last six lines
+summary(df)    # summary statistics for each column
+```
+
+## Tidying of Analgesic Dataset
+
+```{r data_tidy, echo=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyr)
+g <- gather(df, "Measurement", "n", Measurement_1:Measurement_3) #tidying data from wide to long format
+s <- summarise(group_by(g, ID), mean(n))  #summarising data by calculating mean for each individual
+print(s)   #print data
+
+
+      
+
+
+
+
+
+
+
+
+
+

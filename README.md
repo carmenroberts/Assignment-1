@@ -9,6 +9,9 @@ I love Octocat. She's the coolest cat in town.
 
 ![](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/images/octocat.png)
 
+Exploring Anscombe Dataset
+--------------------------
+
     ## [1] 11  8
 
     ## [1] "x1" "x2" "x3" "x4" "y1" "y2" "y3" "y4"
@@ -44,10 +47,82 @@ I love Octocat. She's the coolest cat in town.
     ##  3rd Qu.: 8.570   3rd Qu.:8.950   3rd Qu.: 7.98   3rd Qu.: 8.190  
     ##  Max.   :10.840   Max.   :9.260   Max.   :12.74   Max.   :12.500
 
+Scatter Plot of Anscombe Dataset
+--------------------------------
+
 ``` r
-data("anscombe")
-plot(anscombe$x1, anscombe$y1)
-abline(lm(y1 ~ x1, data = anscombe))
+data("anscombe")            # indicate that you are using the dataset "anscombe" 
+plot(anscombe$x1, anscombe$y1)        #plotting scatter plot of columns x1 and y1
+abline(lm(y1 ~ x1, data = anscombe))  #adding abline showing linear regression
 ```
 
 <img src="README_files/figure-markdown_github/xy_plot-1.svg" style="display: block; margin: auto;" />
+
+Exploring Analgesic Dataset
+---------------------------
+
+    ## [1] 40  5
+
+    ## [1] "ID"            "Group"         "Measurement_1" "Measurement_2"
+    ## [5] "Measurement_3"
+
+    ##   ID     Group Measurement_1 Measurement_2 Measurement_3
+    ## 1  1 Analgesic            26            26            21
+    ## 2  2 Analgesic            29            26            23
+    ## 3  3 Analgesic            24            28            22
+    ## 4  4 Analgesic            25            22            24
+    ## 5  5 Analgesic            24            28            23
+    ## 6  6 Analgesic            22            23            26
+
+    ##    ID   Group Measurement_1 Measurement_2 Measurement_3
+    ## 35 35 Placebo            17            21            15
+    ## 36 36 Placebo            19            17            15
+    ## 37 37 Placebo            14            19            13
+    ## 38 38 Placebo            17            19            13
+    ## 39 39 Placebo            11            20            18
+    ## 40 40 Placebo            15            18            12
+
+    ##        ID              Group    Measurement_1   Measurement_2 
+    ##  Min.   : 1.00   Analgesic:20   Min.   :10.00   Min.   : 8.0  
+    ##  1st Qu.:10.75   Placebo  :20   1st Qu.:17.00   1st Qu.:17.0  
+    ##  Median :20.50                  Median :20.00   Median :20.0  
+    ##  Mean   :20.50                  Mean   :20.12   Mean   :20.7  
+    ##  3rd Qu.:30.25                  3rd Qu.:24.00   3rd Qu.:25.0  
+    ##  Max.   :40.00                  Max.   :30.00   Max.   :32.0  
+    ##  Measurement_3  
+    ##  Min.   :12.00  
+    ##  1st Qu.:16.00  
+    ##  Median :20.50  
+    ##  Mean   :20.52  
+    ##  3rd Qu.:24.25  
+    ##  Max.   :30.00
+
+Tidying of Analgesic Dataset
+----------------------------
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+    ## Source: local data frame [40 x 2]
+    ## 
+    ##       ID  mean(n)
+    ##    (int)    (dbl)
+    ## 1      1 24.33333
+    ## 2      2 26.00000
+    ## 3      3 24.66667
+    ## 4      4 23.66667
+    ## 5      5 25.00000
+    ## 6      6 23.66667
+    ## 7      7 26.66667
+    ## 8      8 23.33333
+    ## 9      9 22.66667
+    ## 10    10 24.00000
+    ## ..   ...      ...
