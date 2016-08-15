@@ -51,10 +51,71 @@ library(dplyr)
 library(tidyr)
 g <- gather(df, "Measurement", "n", Measurement_1:Measurement_3) #tidying data from wide to long format
 s <- summarise(group_by(g, ID), mean(n))  #summarising data by calculating mean for each individual
-print(s)   #print data
+print(s)                                  #print data
+```
+
+## Chicken Weights
+**Null Hypothesis:** Chicken feed does not have an effect on the growth of chickens
+
+**Alternative Hypothesis:** Chicken feed does have an effect on growth of chickens
+
+For an unpaired parametric data set, a one-way ANOVA is required to test the hypothesis.
+
+```{r chick_weights, echo=TRUE}
+df_chicken <- read.csv("chick-weights.csv")             #import data set
+boxplot(weight ~ feed, data = df_chicken)               #create boxplot
+chicken_anova <- aov(weight ~ feed, data = df_chicken)  #one-way ANOVA 
+summary(chicken_anova)                                  #summay statistics
+```
+
+p-value = 5.94e-10 ; F-value = 15.37
+
+The p-value is smaller than the F-value, therefore we reject the null hypothesis.
+We can therefore conclude that chicken feed does have an effect on chicken weights.
+
+## The Hot zone
+**Null Hypothesis:** The contamination of the drinking water did not cause the gastroenteritis outbreak
+
+**Alternative Hypothesis:** The contamination of the drinking water did cause the gastroenteritis outbreak
+
+For an unpaired, non-parametric and categorical data set, a Fishers exact test will be used to test the hypothesis. 
+
+Significance interval set at 95%, reject null hypothesis if p<0.05. Therefore we reject our null hypothesis.
+
+We conclude that the contamination caused severe gastroenteritis.
+
+```{r hot_zone, echo=TRUE}
+df_gastro <- read.csv("gastroenteritis.csv")                #import data set
+df_table <- table(df_gastro$Consumption, df_gastro$Outcome) #create table
+df_table                                                    #print the table
+
+hot_test <- fisher.test(df_table)     #Fisher's test to test hypothesis
+print(hot_test)                       #print the table
+```
+p-value = 2.2e-16
+
+## Nausea
+**Null Hypothesis:** The 5HT3-receptor blocker does not reduce nausea in breast cancer patients receiving chemotherapy
+
+**Alternative Hypothesis:** The 5HT3-receptor blocker does reduce nausea in breast cancer patients receiving chemotherapy
+
+Data is paired, parametric and ordinal. McNemar's Chi-Square test is required to test the hypothesis.
+
+Significance interval set at 95%, reject null hypothesis if p<0.05. Therefore we reject our null hypothesis.
+
+We conclude that the 5HT3-receptor blocker does reduce nausea in breast cancer patients receiving chemotherapy.
+
+```{r nausea, echo=FALSE, warning=FALSE}
+df_nausea <- read.csv("nausea.csv") #import data set
+nausea_new <- df_nausea[-8, -1]     #data cleaning by excluding observation 8
+nausea_new                          #call new table created
+boxplot(nausea_new)                 #creating boxplot
+wilcox.test(nausea_new$Nausea_before, nausea_new$Nausea_after, paired=TRUE)                                          #wilcox rank-sum test to test hypothesis
+```
+
+p-value = 0.04983
 
 
-      
 
 
 

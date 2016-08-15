@@ -126,3 +126,100 @@ Tidying of Analgesic Dataset
     ## 9      9 22.66667
     ## 10    10 24.00000
     ## ..   ...      ...
+
+Chicken Weights
+---------------
+
+**Null Hypothesis:** Chicken feed does not have an effect on the growth of chickens
+
+**Alternative Hypothesis:** Chicken feed does have an effect on growth of chickens
+
+For an unpaired parametric data set, a one-way ANOVA is required to test the hypothesis.
+
+``` r
+df_chicken <- read.csv("chick-weights.csv")             #import data set
+boxplot(weight ~ feed, data = df_chicken)               #create boxplot
+```
+
+![](README_files/figure-markdown_github/chick_weights-1.png)
+
+``` r
+chicken_anova <- aov(weight ~ feed, data = df_chicken)  #one-way ANOVA
+summary(chicken_anova)
+```
+
+    ##             Df Sum Sq Mean Sq F value   Pr(>F)    
+    ## feed         5 231129   46226   15.37 5.94e-10 ***
+    ## Residuals   65 195556    3009                     
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+p-value = 5.94e-10 ; F-value = 15.37
+
+The p-value is smaller than the F-value, therefore we reject the null hypothesis. We can therefore conclude that chicken feed does have an effect on chicken weights.
+
+The Hot zone
+------------
+
+**Null Hypothesis:** The contamination of the drinking water did not cause the gastroenteritis outbreak
+
+**Alternative Hypothesis:** The contamination of the drinking water did cause the gastroenteritis outbreak
+
+For an unpaired, non-parametric and categorical data set, a Fishers exact test will be used to test the hypothesis.
+
+Significance interval set at 95%, reject null hypothesis if p&lt;0.05. Therefore we reject our null hypothesis.
+
+We conclude that the contamination caused severe gastroenteritis.
+
+``` r
+df_gastro <- read.csv("gastroenteritis.csv")
+df_table <- table(df_gastro$Consumption, df_gastro$Outcome)
+df_table
+```
+
+    ##                     
+    ##                      ill not ill
+    ##   < 1 glasses/day     39     121
+    ##   > 4 glasses/day    265     146
+    ##   1 to 4 glasses/day 265     258
+
+``` r
+hot_test <- fisher.test(df_table)
+print(hot_test)
+```
+
+    ## 
+    ##  Fisher's Exact Test for Count Data
+    ## 
+    ## data:  df_table
+    ## p-value < 2.2e-16
+    ## alternative hypothesis: two.sided
+
+p-value = 2.2e-16
+
+Nausea
+------
+
+**Null Hypothesis:** The 5HT3-receptor blocker does not reduce nausea in breast cancer patients receiving chemotherapy
+
+**Alternative Hypothesis:** The 5HT3-receptor blocker does reduce nausea in breast cancer patients receiving chemotherapy
+
+For a paired, parametric and ordinal data set, a McNemar's Chi-Square test is required ti test the hypothesis.
+
+    ##   Nausea_before Nausea_after
+    ## 1             3            2
+    ## 2             4            0
+    ## 3             6            1
+    ## 4             2            3
+    ## 5             2            1
+    ## 6             4            1
+    ## 7             5            0
+
+![](README_files/figure-markdown_github/nausea-1.png)
+
+    ## 
+    ##  Wilcoxon signed rank test with continuity correction
+    ## 
+    ## data:  nausea_new$Nausea_before and nausea_new$Nausea_after
+    ## V = 26, p-value = 0.04983
+    ## alternative hypothesis: true location shift is not equal to 0
