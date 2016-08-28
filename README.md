@@ -1,4 +1,4 @@
-Assignment 1
+Stats Assignments (1-6)
 ================
 Carmen Roberts
 
@@ -9,8 +9,8 @@ I love Octocat. She's the coolest cat in town.
 
 ![](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/images/octocat.png)
 
-Exploring Anscombe Dataset
---------------------------
+Anscombe Dataset
+----------------
 
     ## [1] 11  8
 
@@ -47,9 +47,6 @@ Exploring Anscombe Dataset
     ##  3rd Qu.: 8.570   3rd Qu.:8.950   3rd Qu.: 7.98   3rd Qu.: 8.190  
     ##  Max.   :10.840   Max.   :9.260   Max.   :12.74   Max.   :12.500
 
-Scatter Plot of Anscombe Dataset
---------------------------------
-
 ``` r
 data("anscombe")            # indicate that you are using the dataset "anscombe" 
 plot(anscombe$x1, anscombe$y1)        #plotting scatter plot of columns x1 and y1
@@ -58,8 +55,8 @@ abline(lm(y1 ~ x1, data = anscombe))  #adding abline showing linear regression
 
 <img src="README_files/figure-markdown_github/xy_plot-1.svg" style="display: block; margin: auto;" />
 
-Exploring Analgesic Dataset
----------------------------
+Analgesic Dataset
+-----------------
 
     ## [1] 40  5
 
@@ -97,9 +94,6 @@ Exploring Analgesic Dataset
     ##  3rd Qu.:24.25  
     ##  Max.   :30.00
 
-Tidying of Analgesic Dataset
-----------------------------
-
     ## 
     ## Attaching package: 'dplyr'
 
@@ -134,7 +128,7 @@ Chicken Weights
 
 **Alternative Hypothesis:** Chicken feed does have an effect on growth of chickens
 
-For an unpaired parametric data set, a one-way ANOVA is required to test the hypothesis.
+**Assumptions:** For an unpaired parametric data set, a one-way ANOVA is required to test the hypothesis.
 
 ``` r
 df_chicken <- read.csv("chick-weights.csv")             #import data set
@@ -144,8 +138,8 @@ boxplot(weight ~ feed, data = df_chicken)               #create boxplot
 ![](README_files/figure-markdown_github/chick_weights-1.png)
 
 ``` r
-chicken_anova <- aov(weight ~ feed, data = df_chicken)  #one-way ANOVA
-summary(chicken_anova)
+chicken_anova <- aov(weight ~ feed, data = df_chicken)  #one-way ANOVA 
+summary(chicken_anova)                                  #summay statistics
 ```
 
     ##             Df Sum Sq Mean Sq F value   Pr(>F)    
@@ -156,25 +150,25 @@ summary(chicken_anova)
 
 p-value = 5.94e-10 ; F-value = 15.37
 
+**Conclusions:**
+
 The p-value is smaller than the F-value, therefore we reject the null hypothesis. We can therefore conclude that chicken feed does have an effect on chicken weights.
 
-The Hot zone
+The Hot Zone
 ------------
 
 **Null Hypothesis:** The contamination of the drinking water did not cause the gastroenteritis outbreak
 
 **Alternative Hypothesis:** The contamination of the drinking water did cause the gastroenteritis outbreak
 
-For an unpaired, non-parametric and categorical data set, a Fishers exact test will be used to test the hypothesis.
+**Assumptions:** For an unpaired, non-parametric and categorical data set, a Fishers exact test will be used to test the hypothesis.
 
-Significance interval set at 95%, reject null hypothesis if p&lt;0.05. Therefore we reject our null hypothesis.
-
-We conclude that the contamination caused severe gastroenteritis.
+Significance interval set at 95%, reject the null hypothesis if p&lt;0.05.
 
 ``` r
-df_gastro <- read.csv("gastroenteritis.csv")
-df_table <- table(df_gastro$Consumption, df_gastro$Outcome)
-df_table
+df_gastro <- read.csv("gastroenteritis.csv")                #import data set
+df_table <- table(df_gastro$Consumption, df_gastro$Outcome) #create table
+df_table                                                    #print the table
 ```
 
     ##                     
@@ -184,8 +178,8 @@ df_table
     ##   1 to 4 glasses/day 265     258
 
 ``` r
-hot_test <- fisher.test(df_table)
-print(hot_test)
+hot_test <- fisher.test(df_table)     #Fisher's test to test hypothesis
+print(hot_test)                       #print the table
 ```
 
     ## 
@@ -197,6 +191,10 @@ print(hot_test)
 
 p-value = 2.2e-16
 
+**Conclusions:**
+
+p&lt;0.05, therefore we reject our null hypothesis.We conclude that the contamination caused severe gastroenteritis.
+
 Nausea
 ------
 
@@ -204,7 +202,9 @@ Nausea
 
 **Alternative Hypothesis:** The 5HT3-receptor blocker does reduce nausea in breast cancer patients receiving chemotherapy
 
-For a paired, parametric and ordinal data set, a McNemar's Chi-Square test is required ti test the hypothesis.
+**Assumptions** Data is paired, parametric and ordinal. Wilcox rank-sum test is required to test the hypothesis.
+
+Significance interval set at 95%, reject null hypothesis if p&lt;0.05.
 
     ##   Nausea_before Nausea_after
     ## 1             3            2
@@ -223,3 +223,112 @@ For a paired, parametric and ordinal data set, a McNemar's Chi-Square test is re
     ## data:  nausea_new$Nausea_before and nausea_new$Nausea_after
     ## V = 26, p-value = 0.04983
     ## alternative hypothesis: true location shift is not equal to 0
+
+p-value = 0.04983
+
+**Conclusions:**
+
+p&lt;0.04, therefore we reject our null hypothesis. We conclude that the 5HT3-receptor blocker does reduce nausea in breast cancer patients receiving chemotherapy.
+
+Housing Prices
+--------------
+
+**Null Hypothesis:** The interest rate does not affect the housing prices
+
+**Alternative Hypothesis:** The interest rate does affect the housing prices
+
+**Assumptions for Pearson's Correlation:** Interest rate and housing price (USD) are on an interval scale. There are no outliers. The variables (Interest Rate and Housing Prices) are normally distributed.
+
+**Assumptions for Linear Regression:** There is a linear trend between Interest Rate and Housing Prices. The obsevartions are independent and Interest Rate is measured without error. The residuals are nomally distributed and they have the same variance for all fitted values of y. The residuals is homoskedastic.
+
+``` r
+library(tidyr)
+library(dplyr)
+
+#Import dataset
+df_houses <- read.csv("housing-prices.csv")
+
+#Plot the data
+plot(df_houses$interest_rate, df_houses$median_house_price_USD, 
+     main = "Relationship between Interest Rate and Housing Prices",
+     xlab = "Interest Rate (%)",
+     ylab = "Housing Prices (USD)",
+     xlim = c(5,10), ylim = c(150000,330000))
+
+#Pearson's Correlation test
+house_test <- with(df_houses, cor.test(x = interest_rate, y = median_house_price_USD, method = 'pearson'))
+house_test 
+```
+
+    ## 
+    ##  Pearson's product-moment correlation
+    ## 
+    ## data:  interest_rate and median_house_price_USD
+    ## t = -2.6409, df = 14, p-value = 0.01937
+    ## alternative hypothesis: true correlation is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.8339619 -0.1133269
+    ## sample estimates:
+    ##        cor 
+    ## -0.5766386
+
+``` r
+#Linear Regression
+house_reg <- lm(median_house_price_USD~interest_rate, data = df_houses)
+
+#Add linear regression line
+abline(house_reg)
+```
+
+![](README_files/figure-markdown_github/housing-prices-1.png)
+
+``` r
+#Check for Homoskedasticity
+homo_house <- plot(x = house_reg$fitted, y = house_reg$residuals) 
+abline(h = 0)
+```
+
+![](README_files/figure-markdown_github/housing-prices-2.png)
+
+``` r
+#Check for Gaussian residual distribution/ normality                    
+qqnorm(house_reg$residuals)
+qqline(house_reg$residuals) 
+```
+
+![](README_files/figure-markdown_github/housing-prices-3.png)
+
+``` r
+#Summary of data
+summary(house_reg)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = median_house_price_USD ~ interest_rate, data = df_houses)
+    ## 
+    ## Residuals:
+    ##    Min     1Q Median     3Q    Max 
+    ## -55865 -31631 -16406  27212  80735 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     399229      74427   5.364 9.99e-05 ***
+    ## interest_rate   -24309       9205  -2.641   0.0194 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 43180 on 14 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.3325, Adjusted R-squared:  0.2848 
+    ## F-statistic: 6.974 on 1 and 14 DF,  p-value: 0.01937
+
+r = -0.4458286
+
+**Conclusion:**
+
+Therefore we reject our null hypothesis. We conclude that high interest rates is associated with low housing prices.
+
+The residuals are normally distributed as their distribution fits on the normal Q-Q plot.
+
+The residuals are homoskedastic as they show spread around the zero abline.
